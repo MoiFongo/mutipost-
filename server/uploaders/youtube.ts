@@ -67,23 +67,23 @@ export async function uploadToYouTube(ctx: UploadContext): Promise<UploadResult>
     // Click through to "Visibility" step
     // Click "Next" 3 times (Details → Video Elements → Checks → Visibility)
     for (let i = 0; i < 3; i++) {
-      await page.waitForTimeout(1000);
+      await new Promise(r => setTimeout(r, 1000));
       const nextBtn = await page.$("#next-button");
       if (nextBtn) await nextBtn.click();
     }
 
     // Set as Public
-    await page.waitForTimeout(1000);
+    await new Promise(r => setTimeout(r, 1000));
     const publicRadio = await page.$('tp-yt-paper-radio-button[name="PUBLIC"]');
     if (publicRadio) await publicRadio.click();
 
     // Click "Publish"
-    await page.waitForTimeout(1000);
+    await new Promise(r => setTimeout(r, 1000));
     const publishBtn = await page.$("#done-button");
     if (publishBtn) await publishBtn.click();
 
     // Wait for confirmation
-    await page.waitForTimeout(5000);
+    await new Promise(r => setTimeout(r, 5000));
 
     return { success: true, url: "https://youtube.com/shorts/" };
   } finally {

@@ -32,7 +32,7 @@ export async function uploadToTikTok(ctx: UploadContext): Promise<UploadResult> 
     await fileInput.uploadFile(ctx.videoPath);
 
     // Wait for video to process
-    await page.waitForTimeout(5000);
+    await new Promise(r => setTimeout(r, 5000));
 
     // Fill in caption (TikTok uses a contenteditable div)
     const fullCaption = buildCaption(ctx.caption, ctx.hashtags);
@@ -47,7 +47,7 @@ export async function uploadToTikTok(ctx: UploadContext): Promise<UploadResult> 
     }
 
     // Wait for upload to finish processing
-    await page.waitForTimeout(10000);
+    await new Promise(r => setTimeout(r, 10000));
 
     // Click Post button
     const postButton = await page.$('button[data-e2e="upload-btn"]');
@@ -66,7 +66,7 @@ export async function uploadToTikTok(ctx: UploadContext): Promise<UploadResult> 
     }
 
     // Wait for confirmation
-    await page.waitForTimeout(5000);
+    await new Promise(r => setTimeout(r, 5000));
 
     return { success: true, url: "https://tiktok.com/@" };
   } finally {

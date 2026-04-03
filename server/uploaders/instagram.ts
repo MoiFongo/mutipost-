@@ -27,7 +27,7 @@ export async function uploadToInstagram(ctx: UploadContext): Promise<UploadResul
     });
 
     // Wait to confirm we're logged in
-    await page.waitForTimeout(3000);
+    await new Promise(r => setTimeout(r, 3000));
 
     // Click the create/new post button (+ icon)
     const createBtn = await page.$('svg[aria-label="New post"]');
@@ -40,14 +40,14 @@ export async function uploadToInstagram(ctx: UploadContext): Promise<UploadResul
       else throw new Error("Could not find create button. Session may be expired.");
     }
 
-    await page.waitForTimeout(2000);
+    await new Promise(r => setTimeout(r, 2000));
 
     // Look for file input and upload
     const fileInput = await page.$('input[type="file"]');
     if (!fileInput) throw new Error("Could not find file input on Instagram");
     await fileInput.uploadFile(ctx.videoPath);
 
-    await page.waitForTimeout(5000);
+    await new Promise(r => setTimeout(r, 5000));
 
     // Click "Next" to move past cropping
     let nextBtn = await page.$('button:has-text("Next")');
@@ -63,7 +63,7 @@ export async function uploadToInstagram(ctx: UploadContext): Promise<UploadResul
     }
     if (nextBtn) await nextBtn.click();
 
-    await page.waitForTimeout(2000);
+    await new Promise(r => setTimeout(r, 2000));
 
     // Click "Next" again (past filters)
     const buttons2 = await page.$$("button");
@@ -75,7 +75,7 @@ export async function uploadToInstagram(ctx: UploadContext): Promise<UploadResul
       }
     }
 
-    await page.waitForTimeout(2000);
+    await new Promise(r => setTimeout(r, 2000));
 
     // Fill in caption
     const fullCaption = buildCaption(ctx.caption, ctx.hashtags);
@@ -89,7 +89,7 @@ export async function uploadToInstagram(ctx: UploadContext): Promise<UploadResul
     const reelsTab = await page.$('[role="tab"]:has-text("Reels")');
     if (reelsTab) await reelsTab.click();
 
-    await page.waitForTimeout(1000);
+    await new Promise(r => setTimeout(r, 1000));
 
     // Click Share
     const shareButtons = await page.$$("button");
@@ -102,7 +102,7 @@ export async function uploadToInstagram(ctx: UploadContext): Promise<UploadResul
     }
 
     // Wait for upload confirmation
-    await page.waitForTimeout(10000);
+    await new Promise(r => setTimeout(r, 10000));
 
     return { success: true, url: "https://instagram.com/reels/" };
   } finally {

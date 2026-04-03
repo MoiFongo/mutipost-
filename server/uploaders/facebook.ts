@@ -21,7 +21,7 @@ export async function uploadToFacebook(ctx: UploadContext): Promise<UploadResult
       timeout: 30000,
     });
 
-    await page.waitForTimeout(3000);
+    await new Promise(r => setTimeout(r, 3000));
 
     // Check if logged in
     const loginForm = await page.$('#loginbutton');
@@ -35,7 +35,7 @@ export async function uploadToFacebook(ctx: UploadContext): Promise<UploadResult
       // Try clicking the upload area first
       const uploadArea = await page.$('[role="button"]:has-text("Upload")');
       if (uploadArea) await uploadArea.click();
-      await page.waitForTimeout(2000);
+      await new Promise(r => setTimeout(r, 2000));
 
       const fileInput2 = await page.$('input[type="file"]');
       if (!fileInput2) throw new Error("Could not find file input on Facebook Reels");
@@ -45,7 +45,7 @@ export async function uploadToFacebook(ctx: UploadContext): Promise<UploadResult
     }
 
     // Wait for video to process
-    await page.waitForTimeout(8000);
+    await new Promise(r => setTimeout(r, 8000));
 
     // Fill in description
     const fullCaption = buildCaption(ctx.caption, ctx.hashtags);
@@ -55,7 +55,7 @@ export async function uploadToFacebook(ctx: UploadContext): Promise<UploadResult
       await descInput.type(fullCaption, { delay: 20 });
     }
 
-    await page.waitForTimeout(2000);
+    await new Promise(r => setTimeout(r, 2000));
 
     // Click "Publish" or "Share" button
     const buttons = await page.$$('div[role="button"]');
@@ -73,7 +73,7 @@ export async function uploadToFacebook(ctx: UploadContext): Promise<UploadResult
     }
 
     // Wait for confirmation
-    await page.waitForTimeout(8000);
+    await new Promise(r => setTimeout(r, 8000));
 
     return { success: true, url: "https://facebook.com/reels/" };
   } finally {
